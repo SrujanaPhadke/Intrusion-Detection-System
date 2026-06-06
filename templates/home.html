@@ -1,0 +1,41 @@
+{% extends 'base.html' %}
+{% block title %}Home - Intrusion Detection{% endblock %}
+{% block content %}
+<div class="text-center">
+    <h1 class="fw-bold mb-4 text-primary">Welcome to Intrusion Detection System</h1>
+    <table width="794" height="297" border="1" align="center">
+      <tr>
+        <td width="349"><img src="../static/images/ids1.jpg" width="399" height="280" /></td>
+        <td width="429"><span data-huuid="13613907195740642088">An intrusion detection system (IDS) is&nbsp;a device or software application that monitors a network or system for malicious activity or policy violations and alerts administrators.&nbsp;</span><span data-huuid="13613907195740639269">It functions by analyzing traffic for known threats&nbsp;(<a jsname="TGaAqd" href="https://www.google.com/search?sca_esv=d8140a1b87a5a1ad&amp;sxsrf=AE3TifOCabFEtjpxhlMq_5PojtTEtTEL2Q%3A1763499846534&amp;q=signature-based&amp;sa=X&amp;ved=2ahUKEwid6qfvzPyQAxVNUGwGHYZuCcsQxccNegQIJBAB&amp;mstk=AUtExfBSR2REBXM1yfYYHXLuni58kcqeb8043tGU2YENjyn5XYA4Uf6iE_STtimEPtn0VHLwu8pdHT_UVYn_Amk3CNGGNBZVDfsaUWT57F7yRFOfpekJ5FjBtKeexdjvhlO_o3kTT7fRSsg8tZcgTh_3TeXnw8Krf5Jlv-nyP6WkMFZzLiHHRmccTDIhvCzs1MKhk4S-f_3hS8IiIDZZHmLcwTyyugnnempLAeBdwaSlB-UXWpu8k10HpgI7GURNj9_RmhbP9__JK35ZegqHuQ6-aHDH-ae1alXr03SJwW76xSHegA&amp;csui=3" data-hveid="CCQQAQ">signature-based</a>)&nbsp;or by identifying deviations from normal behavior&nbsp;(<a jsname="TGaAqd" href="https://www.google.com/search?sca_esv=d8140a1b87a5a1ad&amp;sxsrf=AE3TifOCabFEtjpxhlMq_5PojtTEtTEL2Q%3A1763499846534&amp;q=anomaly-based&amp;sa=X&amp;ved=2ahUKEwid6qfvzPyQAxVNUGwGHYZuCcsQxccNegQIJBAC&amp;mstk=AUtExfBSR2REBXM1yfYYHXLuni58kcqeb8043tGU2YENjyn5XYA4Uf6iE_STtimEPtn0VHLwu8pdHT_UVYn_Amk3CNGGNBZVDfsaUWT57F7yRFOfpekJ5FjBtKeexdjvhlO_o3kTT7fRSsg8tZcgTh_3TeXnw8Krf5Jlv-nyP6WkMFZzLiHHRmccTDIhvCzs1MKhk4S-f_3hS8IiIDZZHmLcwTyyugnnempLAeBdwaSlB-UXWpu8k10HpgI7GURNj9_RmhbP9__JK35ZegqHuQ6-aHDH-ae1alXr03SJwW76xSHegA&amp;csui=3" data-hveid="CCQQAg">anomaly-based</a>).&nbsp;</span><span data-huuid="13613907195740640546">IDSs can be implemented as software or hardware, with network-based (NIDS) and host-based (HIDS) being the two main types</span></td>
+      </tr>
+      <tr>
+        <td>Intrusion Detection System (IDS) observes network traffic for malicious transactions and sends immediate alerts when it is observed. It is software that checks a network or system for malicious activities or policy violations. Each illegal activity or violation is often recorded either centrally using an SIEM system or notified to an administration.&nbsp;</td>
+        <td><img src="../static/images/ids2.jpg" width="504" height="383" /></td>
+      </tr>
+    </table>
+    <p class="fw-bold mb-4 text-primary">&nbsp;</p>
+    <p class="lead mb-5">Detect network intrusions in real-time using Machine Learning and KNN algorithm.</p>
+
+    <div class="row justify-content-center">
+        <div class="col-md-4">
+            <div class="card p-4">
+                <h4 class="text-center text-success mb-3">🔍 Predict Manually</h4>
+                <p>Enter feature values manually and check if the connection is normal or intrusive.</p>
+                <a href="{{ url_for('prediction') }}" class="btn btn-primary mt-3 w-100">Go to Prediction</a>
+            </div>
+        </div>
+
+        <div class="col-md-4">
+            <div class="card p-4">
+                <h4 class="text-center text-info mb-3">📁 Predict from CSV File</h4>
+                <p>Upload a CSV dataset and get a full analysis of normal and intrusive activities.</p>
+                <a href="{{ url_for('predict_file') }}" class="btn btn-primary mt-3 w-100">Upload File</a>
+            </div>
+        </div>
+    </div>
+</div>
+
+<footer>
+    <p>© {{ 2025 }} Intrusion Detection System | Built with ML using Flask</p>
+</footer>
+{% endblock %}

@@ -1,0 +1,165 @@
+{% extends "base.html" %}
+
+{% block title %}Intrusion Detection - Single Prediction{% endblock %}
+
+{% block content %}
+<div class="container mt-4">
+    <div class="card shadow-lg p-4 rounded-4">
+        <h2 class="text-center text-primary mb-4">Intrusion Detection - Single Entry</h2>
+
+        <form method="POST">
+            <div class="row">
+                <!-- PROTOCOL -->
+                <div class="col-md-4 mb-3">
+                    <label><strong>Protocol</strong></label>
+                    <select class="form-select" name="protocol_type" required>
+                        <option value="">Select</option>
+                        <option value="tcp">TCP</option>
+                        <option value="udp">UDP</option>
+                        <option value="icmp">ICMP</option>
+                    </select>
+                </div>
+
+                <!-- SERVICE -->
+                <div class="col-md-4 mb-3">
+                    <label><strong>Service</strong></label>
+                    <select class="form-select" name="service" required>
+                        <option value="">Select</option>
+                        <option value="http">HTTP</option>
+                        <option value="ftp">FTP</option>
+                        <option value="dns">DNS</option>
+                        <option value="ssh">SSH</option>
+                        <option value="smtp">SMTP</option>
+                    </select>
+                </div>
+
+                <!-- DURATION -->
+                <div class="col-md-4 mb-3">
+                    <label><strong>Duration</strong></label>
+                    <input type="number" step="any" class="form-control" name="duration" value="100" required>
+                </div>
+            </div>
+
+            <div class="row">
+                <!-- SRC BYTES -->
+                <div class="col-md-3 mb-3">
+                    <label><strong>Src Bytes</strong></label>
+                    <input type="number" step="any" class="form-control" name="src_bytes" value="5000" required>
+                </div>
+
+                <!-- DST BYTES -->
+                <div class="col-md-3 mb-3">
+                    <label><strong>Dst Bytes</strong></label>
+                    <input type="number" step="any" class="form-control" name="dst_bytes" value="10000" required>
+                </div>
+
+                <!-- COUNT -->
+                <div class="col-md-3 mb-3">
+                    <label><strong>Count</strong></label>
+                    <input type="number" step="any" class="form-control" name="count" value="10" required>
+                </div>
+
+                <!-- SERROR_RATE -->
+                <div class="col-md-3 mb-3">
+                    <label><strong>Serror Rate</strong></label>
+                    <input type="number" step="0.01" class="form-control" name="serror_rate" value="0.5" min="0" max="1" required>
+                </div>
+            </div>
+
+            <!-- MODEL SELECTION BUTTONS -->
+            <div class="text-center mt-4 mb-3">
+                <div class="btn-group" role="group">
+                    <button type="submit" name="model_type" value="knn" class="btn btn-primary px-4 py-2">
+                        🎯 Predict with KNN
+                    </button>
+                    {% if rf_model_available %}
+                    <button type="submit" name="model_type" value="rf" class="btn btn-success px-4 py-2">
+                        🌲 Predict with Random Forest
+                    </button>
+                    {% else %}
+                    <button type="submit" name="model_type" value="rf" class="btn btn-secondary px-4 py-2" disabled>
+                        🌲 Random Forest (Not Loaded)
+                    </button>
+                    {% endif %}
+                </div>
+            </div>
+        </form>
+
+        <!-- RESULTS -->
+        {% if prediction or rf_prediction %}
+        <div class="mt-4">
+            {% if prediction %}
+            <div class="alert {% if prediction == 'Normal' %}alert-success{% else %}alert-danger{% endif %} text-center">
+                <h4>KNN Result: <strong>{{ prediction }}</strong></h4>
+            </div>
+            {% endif %}
+            {% if rf_prediction %}
+            <div class="alert {% if 'Normal' in rf_prediction %}alert-success{% else %}alert-danger{% endif %} text-center">
+                <h4>Random Forest Result: <strong>{{ rf_prediction }}</strong></h4>
+            </div>
+            {% endif %}
+        </div>
+        {% endif %}
+
+        {% if error_message %}
+        <div class="alert alert-danger mt-4">
+            {{ error_message }}
+        </div>
+        {% endif %}
+
+        <!-- PREDICTION LOGS TABLE -->
+        {% if prediction_logs %}
+        <div class="mt-5">
+            <h4 class="text-primary mb-3">📊 Your Recent Predictions</h4>
+            <div class="table-responsive">
+                <table class="table table-striped table-hover table-bordered">
+                    <thead class="table-dark">
+                        <tr>
+                            <th>Date</th>
+                            <th>Algorithm</th>
+                            <th>Protocol</th>
+                            <th>Service</th>
+                            <th>Prediction</th>
+
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for log in prediction_logs %}
+                        <tr>
+                            <td>{{ log.created_at.strftime('%Y-%m-%d %H:%M') }}</td>
+                            <td>
+                                <span class="badge {% if log.algorithm == 'KNN' %}bg-primary{% else %}bg-success{% endif %}">
+                                    {{ log.algorithm }}
+                                </span>
+                            </td>
+                            <td>{{ log.protocol_type }}</td>
+                            <td>{{ log.service }}</td>
+                            <td>
+                                <span class="badge {% if log.prediction == 'normal' or 'Normal' in log.prediction %}bg-success{% else %}bg-danger{% endif %}">
+                                    {{ log.prediction }}
+                                </span>
+                            </td>
+
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+        {% endif %}
+    </div>
+</div>
+
+{% with messages = get_flashed_messages(with_categories=true) %}
+    {% if messages %}
+        <div class="container mt-3">
+            {% for category, message in messages %}
+                <div class="alert alert-{{ category }} alert-dismissible fade show" role="alert">
+                    {{ message }}
+                    <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+                </div>
+            {% endfor %}
+        </div>
+    {% endif %}
+{% endwith %}
+{% endblock %}
